@@ -2,11 +2,7 @@ defmodule BlogApiWeb.Router do
   use BlogApiWeb, :router
 
   pipeline :api do
-    plug :accepts, ["json"]
-  end
-
-  scope "/api", BlogApiWeb do
-    pipe_through :api
+    plug(:accepts, ["json"])
   end
 
   # Enables LiveDashboard only for development
@@ -20,21 +16,15 @@ defmodule BlogApiWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
-      pipe_through [:fetch_session, :protect_from_forgery]
+      pipe_through([:fetch_session, :protect_from_forgery])
 
-      live_dashboard "/dashboard", metrics: BlogApiWeb.Telemetry
+      live_dashboard("/dashboard", metrics: BlogApiWeb.Telemetry)
     end
   end
 
-  # Enables the Swoosh mailbox preview in development.
-  #
-  # Note that preview only shows emails that were sent by the same
-  # node running the Phoenix server.
-  if Mix.env() == :dev do
-    scope "/dev" do
-      pipe_through [:fetch_session, :protect_from_forgery]
+  scope "/api", BlogApiWeb do
+    pipe_through(:api)
 
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
-    end
+    resources("/user", UsersController, only: [:create])
   end
 end
