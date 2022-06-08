@@ -4,4 +4,6 @@ defmodule BlogApi do
   defdelegate create_user(params), to: User.Create, as: :call
 
   defdelegate fetch_user(id), to: User.Get, as: :call
+
+  defdelegate list_users(), to: User.Get, as: :list_users
 end

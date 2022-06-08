@@ -14,6 +14,11 @@ defmodule BlogApi.User.Get do
     end
   end
 
+  @spec list_users() :: [User.t()] | list()
+  def list_users() do
+    Repo.all(User)
+  end
+
   defp get(uuid) do
     case Repo.get(User, uuid) do
       nil -> {:error, "User not found!"}

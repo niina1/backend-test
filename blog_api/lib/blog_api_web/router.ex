@@ -5,6 +5,10 @@ defmodule BlogApiWeb.Router do
     plug(:accepts, ["json"])
   end
 
+  pipeline :auth do
+    plug(BlogApiWeb.Auth.Pipeline)
+  end
+
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put
@@ -25,8 +29,14 @@ defmodule BlogApiWeb.Router do
   scope "/api", BlogApiWeb do
     pipe_through(:api)
 
-    resources("/user", UsersController, only: [:create])
+    post("/user", UsersController, :create)
 
     post("/login", UsersController, :login)
+  end
+
+  scope "/api", BlogApiWeb do
+    pipe_through([:api, :auth])
+
+    get("/user", UsersController, :get)
   end
 end
