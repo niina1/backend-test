@@ -34,16 +34,12 @@ defmodule BlogApiWeb.Controllers.UserControllerTest do
 
   @valid_user %{
     "display_name" => "Name Displayed",
-    "email" => "emailtest2@gmail.com",
+    "email" => "emailtest@gmail.com",
     "image" => "image"
   }
 
   @valid_user_list [
-    %{
-      "display_name" => "Name Displayed",
-      "email" => "emailtest@gmail.com",
-      "image" => "image"
-    }
+    @valid_user
   ]
 
   @email_is_required_message %{"message" => %{"email" => ["is required"]}}
@@ -104,9 +100,9 @@ defmodule BlogApiWeb.Controllers.UserControllerTest do
     end
   end
 
-  describe "GET api/user/2" do
+  describe "GET api/user/:id" do
     setup %{conn: conn} do
-      {:ok, user} = BlogApi.create_user(@valid_attrs)
+      {:ok, user} = BlogApi.create_user(@valid_attrs_2)
       {:ok, token, _claims} = encode_and_sign(user)
       conn = put_req_header(conn, "authorization", "Bearer #{token}")
       {:ok, conn: conn}
@@ -122,7 +118,7 @@ defmodule BlogApiWeb.Controllers.UserControllerTest do
     end
 
     test "when get have valid uuid, returns an user", %{conn: conn} do
-      {:ok, user} = BlogApi.create_user(@valid_attrs_2)
+      {:ok, user} = BlogApi.create_user(@valid_attrs)
 
       response =
         conn
@@ -130,6 +126,15 @@ defmodule BlogApiWeb.Controllers.UserControllerTest do
         |> json_response(:ok)
 
       assert @valid_user = response
+    end
+  end
+
+  describe "GET api/user/" do
+    setup %{conn: conn} do
+      {:ok, user} = BlogApi.create_user(@valid_attrs)
+      {:ok, token, _claims} = encode_and_sign(user)
+      conn = put_req_header(conn, "authorization", "Bearer #{token}")
+      {:ok, conn: conn}
     end
 
     test "when get have a valid bearer token, returns an users list", %{conn: conn} do
