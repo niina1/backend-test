@@ -29,7 +29,7 @@ defmodule BlogApiWeb.Controllers.UserControllerTest do
   @user_already_existis_message %{"message" => "User already exists"}
   @user_not_found_message %{"message" => "User not found!"}
 
-  describe "create/2" do
+  describe "POST user/2" do
     test "when all params are valid, returns the token", %{conn: conn} do
       response =
         conn
@@ -60,7 +60,7 @@ defmodule BlogApiWeb.Controllers.UserControllerTest do
     end
   end
 
-  describe "login/2" do
+  describe "POST login/2" do
     test "when login params are valid, returns a token", %{conn: conn} do
       BlogApi.create_user(@valid_attrs)
 
