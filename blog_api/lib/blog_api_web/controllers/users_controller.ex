@@ -25,6 +25,14 @@ defmodule BlogApiWeb.UsersController do
     end
   end
 
+  def get(conn, %{"id" => id}) do
+    with {:ok, user} <- BlogApi.fetch_user(id) do
+      conn
+      |> put_status(:ok)
+      |> render("user.json", %{users: user})
+    end
+  end
+
   def get(conn, _params) do
     users = BlogApi.list_users()
 

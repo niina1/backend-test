@@ -9,6 +9,13 @@ defmodule BlogApiWeb.Controllers.UserControllerTest do
     image: "image"
   }
 
+  @valid_attrs_2 %{
+    display_name: "Name Displayed",
+    email: "emailtest2@gmail.com",
+    password: "123456",
+    image: "image"
+  }
+
   @invalid_attrs %{
     display_name: "Name Displayed",
     password: "123456",
@@ -23,6 +30,12 @@ defmodule BlogApiWeb.Controllers.UserControllerTest do
   @invalid_login_attrs %{
     email: "emailtest@gmail.com",
     password: "xxxxxx"
+  }
+
+  @valid_user %{
+    "display_name" => "Name Displayed",
+    "email" => "emailtest2@gmail.com",
+    "image" => "image"
   }
 
   @valid_user_list [
@@ -97,6 +110,26 @@ defmodule BlogApiWeb.Controllers.UserControllerTest do
       {:ok, token, _claims} = encode_and_sign(user)
       conn = put_req_header(conn, "authorization", "Bearer #{token}")
       {:ok, conn: conn}
+    end
+
+    test "when get have invalids uuid, returns an error", %{conn: conn} do
+      response =
+        conn
+        |> get(Routes.users_path(conn, :get, Ecto.UUID.generate()))
+        |> json_response(:bad_request)
+
+      assert @user_not_found_message = response
+    end
+
+    test "when get have valid uuid, returns an user", %{conn: conn} do
+      {:ok, user} = BlogApi.create_user(@valid_attrs_2)
+
+      response =
+        conn
+        |> get(Routes.users_path(conn, :get, user.id))
+        |> json_response(:ok)
+
+      assert @valid_user = response
     end
 
     test "when get have a valid bearer token, returns an users list", %{conn: conn} do

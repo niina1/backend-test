@@ -38,5 +38,7 @@ defmodule BlogApiWeb.Router do
     pipe_through([:api, :auth])
 
     get("/user", UsersController, :get)
+
+    get("/user/:id", UsersController, :get)
   end
 end
