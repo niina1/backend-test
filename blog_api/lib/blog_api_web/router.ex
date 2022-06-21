@@ -32,10 +32,8 @@ defmodule BlogApiWeb.Router do
     post("/user", UsersController, :create)
 
     post("/login", UsersController, :login)
-  end
 
-  scope "/api", BlogApiWeb do
-    pipe_through([:api, :auth])
+    pipe_through(:auth)
 
     get("/user", UsersController, :get)
 

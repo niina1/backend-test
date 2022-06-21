@@ -5,5 +5,5 @@ defmodule BlogApi do
 
   defdelegate fetch_user(id), to: User.Get, as: :call
 
-  defdelegate list_users(), to: User.Get, as: :list_users
+  defdelegate list_users(), to: User.List, as: :call
 end

@@ -3,7 +3,7 @@ defmodule BlogApi.User.Get do
   alias Ecto.UUID
 
   @moduledoc """
-  Busca Users no banco de dados
+  Busca Users no banco de dados pelo id
   """
 
   @spec call(integer()) :: User.t()
@@ -12,11 +12,6 @@ defmodule BlogApi.User.Get do
       :error -> {:error, "Invalid ID formart!"}
       {:ok, uuid} -> get(uuid)
     end
-  end
-
-  @spec list_users() :: [User.t()] | list()
-  def list_users() do
-    Repo.all(User)
   end
 
   defp get(uuid) do
