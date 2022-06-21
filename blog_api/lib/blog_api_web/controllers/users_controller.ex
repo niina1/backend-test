@@ -2,7 +2,6 @@ defmodule BlogApiWeb.UsersController do
   use BlogApiWeb, :controller
 
   alias BlogApiWeb.Auth.Guardian
-  require Logger
 
   action_fallback(BlogApiWeb.FallbackController)
 
@@ -22,6 +21,14 @@ defmodule BlogApiWeb.UsersController do
       conn
       |> put_status(:ok)
       |> render("login.json", %{token: token})
+    end
+  end
+
+  def get(conn, %{"id" => id}) do
+    with {:ok, user} <- BlogApi.fetch_user(id) do
+      conn
+      |> put_status(:ok)
+      |> render("user.json", %{users: user})
     end
   end
 
