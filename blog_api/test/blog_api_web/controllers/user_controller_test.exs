@@ -1,17 +1,11 @@
 defmodule BlogApiWeb.Controllers.UserControllerTest do
   use BlogApiWeb.ConnCase
   import BlogApiWeb.Auth.Guardian
+  import BlogApi.Factory
 
   @valid_attrs %{
     display_name: "Name Displayed",
     email: "emailtest@gmail.com",
-    password: "123456",
-    image: "image"
-  }
-
-  @valid_attrs_2 %{
-    display_name: "Name Displayed",
-    email: "emailtest2@gmail.com",
     password: "123456",
     image: "image"
   }
@@ -31,16 +25,6 @@ defmodule BlogApiWeb.Controllers.UserControllerTest do
     email: "emailtest@gmail.com",
     password: "xxxxxx"
   }
-
-  @valid_user %{
-    "display_name" => "Name Displayed",
-    "email" => "emailtest@gmail.com",
-    "image" => "image"
-  }
-
-  @valid_user_list [
-    @valid_user
-  ]
 
   @email_is_required_message %{"message" => %{"email" => ["is required"]}}
   @user_already_existis_message %{"message" => "User already exists"}
@@ -102,7 +86,7 @@ defmodule BlogApiWeb.Controllers.UserControllerTest do
 
   describe "GET api/user/:id" do
     setup %{conn: conn} do
-      {:ok, user} = BlogApi.create_user(@valid_attrs_2)
+      user = insert(:user)
       {:ok, token, _claims} = encode_and_sign(user)
       conn = put_req_header(conn, "authorization", "Bearer #{token}")
       {:ok, conn: conn}
@@ -118,20 +102,20 @@ defmodule BlogApiWeb.Controllers.UserControllerTest do
     end
 
     test "when get have valid uuid, returns an user", %{conn: conn} do
-      {:ok, user} = BlogApi.create_user(@valid_attrs)
+      user = insert(:user)
 
       response =
         conn
         |> get(Routes.users_path(conn, :get, user.id))
         |> json_response(:ok)
 
-      assert @valid_user = response
+      assert user = response
     end
   end
 
   describe "GET api/user/" do
     setup %{conn: conn} do
-      {:ok, user} = BlogApi.create_user(@valid_attrs)
+      user = insert(:user)
       {:ok, token, _claims} = encode_and_sign(user)
       conn = put_req_header(conn, "authorization", "Bearer #{token}")
       {:ok, conn: conn}
@@ -143,7 +127,7 @@ defmodule BlogApiWeb.Controllers.UserControllerTest do
         |> get(Routes.users_path(conn, :get))
         |> json_response(:ok)
 
-      assert @valid_user_list = response
+      assert is_list(response)
     end
   end
 end

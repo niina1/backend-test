@@ -2,7 +2,6 @@ defmodule BlogApiWeb.UsersController do
   use BlogApiWeb, :controller
 
   alias BlogApiWeb.Auth.Guardian
-  require Logger
 
   action_fallback(BlogApiWeb.FallbackController)
 
