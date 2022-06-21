@@ -15,7 +15,7 @@ defmodule BloApi.User.ListTest do
     test "when database is empty, returns an empty list" do
       response = List.call()
 
-      assert is_list(response)
+      assert [] = response
     end
   end
 end
