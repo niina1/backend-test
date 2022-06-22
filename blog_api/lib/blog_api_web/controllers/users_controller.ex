@@ -24,6 +24,22 @@ defmodule BlogApiWeb.UsersController do
     end
   end
 
+  def get(conn, %{"id" => id}) do
+    with {:ok, user} <- BlogApi.fetch_user(id) do
+      conn
+      |> put_status(:ok)
+      |> render("user.json", %{users: user})
+    end
+  end
+
+  def get(conn, _params) do
+    users = BlogApi.list_users()
+
+    conn
+    |> put_status(:ok)
+    |> render("list_users.json", %{users: users})
+  end
+
   defp validate_params(params, key) do
     case Map.fetch(params, key) do
       {:ok, nil} -> {:error, "\"#{key}\" is required"}

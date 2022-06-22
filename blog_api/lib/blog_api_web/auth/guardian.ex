@@ -27,7 +27,7 @@ defmodule BlogApiWeb.Auth.Guardian do
   end
 
   defp create_token(user) do
-    {:ok, token, _claims} = encode_and_sign(user)
+    {:ok, token, _claims} = encode_and_sign(user, %{}, token_type: "access", ttl: {15, :minute})
     {:ok, token}
   end
 end
