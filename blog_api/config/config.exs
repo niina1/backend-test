@@ -54,3 +54,7 @@ import_config "#{config_env()}.exs"
 config :blog_api, BlogApiWeb.Auth.Guardian,
   issuer: "blog_api",
   secret_key: "#{GUARDIAN_TOKEN}"
+
+config :blog_api, BlogApiWeb.Auth.Pipeline,
+  module: BlogApiWeb.Auth.Guardian,
+  error_handler: BlogApiWeb.Auth.ErrorHandler

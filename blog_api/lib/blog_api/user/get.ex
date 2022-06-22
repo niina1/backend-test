@@ -3,7 +3,7 @@ defmodule BlogApi.User.Get do
   alias Ecto.UUID
 
   @moduledoc """
-  Busca Users no banco de dados
+  Busca Users no banco de dados pelo id
   """
 
   @spec call(integer()) :: User.t()
