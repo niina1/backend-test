@@ -41,14 +41,11 @@ defmodule BlogApiWeb.UsersController do
   end
 
   def delete(conn, _params) do
-    with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
-         {:ok, user, _claims} = Guardian.resource_from_token(token) do
-      BlogApi.delete_user(user.id)
+    BlogApi.delete_user(conn.assigns.user_id)
 
-      conn
-      |> put_status(:ok)
-      |> render("message.json", message: "User deleted!")
-    end
+    conn
+    |> put_status(:ok)
+    |> render("message.json", message: "User deleted!")
   end
 
   defp validate_params(params, key) do

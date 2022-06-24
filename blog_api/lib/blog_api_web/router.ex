@@ -9,6 +9,10 @@ defmodule BlogApiWeb.Router do
     plug(BlogApiWeb.Auth.Pipeline)
   end
 
+  pipeline :ensure_user do
+    plug(BlogApiWeb.Plugs.EnsureUser)
+  end
+
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put
@@ -39,6 +43,8 @@ defmodule BlogApiWeb.Router do
 
     get("/user/:id", UsersController, :get)
 
-    delete("/user/me", UsersController, :delete)
+    pipe_through(:ensure_user)
+
+    delete("/user", UsersController, :delete)
   end
 end

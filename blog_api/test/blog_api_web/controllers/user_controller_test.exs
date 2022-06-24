@@ -152,7 +152,7 @@ defmodule BlogApiWeb.Controllers.UserControllerTest do
       assert @user_deleted_message == response
     end
 
-    test "when delete have an ivalid bearer token, returns unauthorized", %{conn: conn} do
+    test "when delete have an invalid bearer token, returns unauthorized", %{conn: conn} do
       conn = put_req_header(conn, "authorization", "Bearer 123")
 
       response =
