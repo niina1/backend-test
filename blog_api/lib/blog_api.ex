@@ -1,5 +1,6 @@
 defmodule BlogApi do
   alias BlogApi.User
+  alias BlogApi.Post
 
   defdelegate create_user(params), to: User.Create, as: :call
 
@@ -8,4 +9,6 @@ defmodule BlogApi do
   defdelegate list_users(), to: User.List, as: :call
 
   defdelegate delete_user(id), to: User.Delete, as: :call
+
+  defdelegate create_post(params), to: Post.Create, as: :call
 end

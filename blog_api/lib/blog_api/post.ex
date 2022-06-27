@@ -14,6 +14,16 @@ defmodule BlogApi.Post do
     timestamps(inserted_at: :published, updated_at: :updated)
   end
 
+  @doc """
+   Verifica se os parametros de criação do post atendem aos requisitos do changeset
+  """
+  @spec build(map()) :: Ecto.Schema.t() | Ecto.Changeset.t()
+  def build(params) do
+    params
+    |> changeset()
+    |> apply_action(:insert)
+  end
+
   @required_params [:title, :content, :user_id]
   def changeset(params) do
     %__MODULE__{}

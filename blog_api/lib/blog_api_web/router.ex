@@ -46,5 +46,7 @@ defmodule BlogApiWeb.Router do
     pipe_through(:ensure_user)
 
     delete("/user", UsersController, :delete)
+
+    post("/post", PostsController, :create)
   end
 end

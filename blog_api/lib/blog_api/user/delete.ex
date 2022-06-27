@@ -1,6 +1,5 @@
 defmodule BlogApi.User.Delete do
-  alias BlogApi.{User, Repo}
-  alias Ecto.UUID
+  alias BlogApi.Repo
 
   def call(id) do
     with {:ok, user} <- BlogApi.fetch_user(id) do
