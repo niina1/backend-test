@@ -40,6 +40,14 @@ defmodule BlogApiWeb.UsersController do
     |> render("list_users.json", %{users: users})
   end
 
+  def delete(conn, _params) do
+    BlogApi.delete_user(conn.assigns.user_id)
+
+    conn
+    |> put_status(:ok)
+    |> render("message.json", message: "User deleted!")
+  end
+
   defp validate_params(params, key) do
     case Map.fetch(params, key) do
       {:ok, nil} -> {:error, "\"#{key}\" is required"}

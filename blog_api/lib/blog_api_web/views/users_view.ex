@@ -17,4 +17,8 @@ defmodule BlogApiWeb.UsersView do
       image: user.image
     }
   end
+
+  def render("message.json", %{message: message}) do
+    %{message: message}
+  end
 end

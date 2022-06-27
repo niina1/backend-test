@@ -30,6 +30,7 @@ defmodule BlogApiWeb.Controllers.UserControllerTest do
   @user_already_existis_message %{"message" => "User already exists"}
   @user_already_existis_message %{"message" => "User already exists"}
   @user_not_found_message %{"message" => "User not found!"}
+  @user_deleted_message %{"message" => "User deleted!"}
 
   describe "POST user/2" do
     test "when all params are valid, returns the token", %{conn: conn} do
@@ -114,20 +115,50 @@ defmodule BlogApiWeb.Controllers.UserControllerTest do
   end
 
   describe "GET api/user/" do
-    setup %{conn: conn} do
+    test "when get have a valid bearer token, returns an users list", %{conn: conn} do
       user = insert(:user)
       {:ok, token, _claims} = encode_and_sign(user)
       conn = put_req_header(conn, "authorization", "Bearer #{token}")
-      {:ok, conn: conn}
-    end
 
-    test "when get have a valid bearer token, returns an users list", %{conn: conn} do
       response =
         conn
         |> get(Routes.users_path(conn, :get))
         |> json_response(:ok)
 
       assert is_list(response)
+    end
+
+    test "when get have an invalid bearer token, returns unauthorized", %{conn: conn} do
+      conn = put_req_header(conn, "authorization", "Bearer 123}")
+
+      response =
+        conn
+        |> get(Routes.users_path(conn, :get))
+        |> json_response(:unauthorized)
+    end
+  end
+
+  describe "DELETE api/user/" do
+    test "when delete have a valid bearer token, returns user deleted message", %{conn: conn} do
+      user = insert(:user)
+      {:ok, token, _claims} = encode_and_sign(user)
+      conn = put_req_header(conn, "authorization", "Bearer #{token}")
+
+      response =
+        conn
+        |> delete(Routes.users_path(conn, :delete))
+        |> json_response(:ok)
+
+      assert @user_deleted_message == response
+    end
+
+    test "when delete have an invalid bearer token, returns unauthorized", %{conn: conn} do
+      conn = put_req_header(conn, "authorization", "Bearer 123")
+
+      response =
+        conn
+        |> delete(Routes.users_path(conn, :delete))
+        |> json_response(:unauthorized)
     end
   end
 end
