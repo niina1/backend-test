@@ -48,5 +48,7 @@ defmodule BlogApiWeb.Router do
     delete("/user", UsersController, :delete)
 
     post("/post", PostsController, :create)
+
+    get("/post", PostsController, :get)
   end
 end

@@ -49,4 +49,28 @@ defmodule BlogApiWeb.Controllers.PostControllerTest do
         |> json_response(:unauthorized)
     end
   end
+
+  describe "GET api/post/" do
+    test "when get have a valid bearer token, returns an posts list", %{conn: conn} do
+      user = insert(:user)
+      {:ok, token, _claims} = encode_and_sign(user)
+      conn = put_req_header(conn, "authorization", "Bearer #{token}")
+
+      response =
+        conn
+        |> get(Routes.posts_path(conn, :get))
+        |> json_response(:ok)
+
+      assert is_list(response)
+    end
+
+    test "when get have an invalid bearer token, returns unauthorized", %{conn: conn} do
+      conn = put_req_header(conn, "authorization", "Bearer 123}")
+
+      response =
+        conn
+        |> get(Routes.posts_path(conn, :get))
+        |> json_response(:unauthorized)
+    end
+  end
 end
