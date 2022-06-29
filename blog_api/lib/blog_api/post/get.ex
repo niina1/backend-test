@@ -9,7 +9,7 @@ defmodule BlogApi.Post.Get do
   @spec call(integer()) :: Post.t()
   def call(id) do
     case UUID.cast(id) do
-      :error -> {:error, "Invalid ID formart!"}
+      :error -> {:error, "Invalid ID format!"}
       {:ok, uuid} -> get(uuid)
     end
   end
