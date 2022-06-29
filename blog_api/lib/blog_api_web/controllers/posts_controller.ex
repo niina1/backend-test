@@ -13,6 +13,14 @@ defmodule BlogApiWeb.PostsController do
     end
   end
 
+  def get(conn, %{"id" => id}) do
+    with {:ok, post} <- BlogApi.fetch_post(id) do
+      conn
+      |> put_status(:ok)
+      |> render("post.json", %{posts: post})
+    end
+  end
+
   def get(conn, _params) do
     posts = BlogApi.list_posts()
 

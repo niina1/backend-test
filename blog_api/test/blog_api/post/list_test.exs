@@ -5,7 +5,7 @@ defmodule BloApi.Post.ListTest do
   alias BlogApi.Post.List
 
   describe "call/1" do
-    test "when database isnt empty, returns an post list" do
+    test "when database isnt empty, returns a post list" do
       post = insert(:post)
       response = List.call()
 

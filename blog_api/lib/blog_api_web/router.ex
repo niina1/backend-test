@@ -50,5 +50,7 @@ defmodule BlogApiWeb.Router do
     post("/post", PostsController, :create)
 
     get("/post", PostsController, :get)
+
+    get("/post/:id", PostsController, :get)
   end
 end
