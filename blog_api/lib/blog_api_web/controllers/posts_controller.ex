@@ -9,7 +9,23 @@ defmodule BlogApiWeb.PostsController do
     with {:ok, post} <- BlogApi.create_post(params) do
       conn
       |> put_status(:ok)
-      |> render("post.json", post: post)
+      |> render("post_created.json", post: post)
     end
+  end
+
+  def get(conn, %{"id" => id}) do
+    with {:ok, post} <- BlogApi.fetch_post(id) do
+      conn
+      |> put_status(:ok)
+      |> render("post.json", %{posts: post})
+    end
+  end
+
+  def get(conn, _params) do
+    posts = BlogApi.list_posts()
+
+    conn
+    |> put_status(:ok)
+    |> render("list_posts.json", %{posts: posts})
   end
 end

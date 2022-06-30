@@ -2,6 +2,8 @@ defmodule BlogApi.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias BlogApi.Post
+
   @primary_key {:id, Ecto.UUID, autogenerate: true}
 
   schema "users" do
@@ -10,6 +12,7 @@ defmodule BlogApi.User do
     field(:password_hash, :string)
     field(:password, :string, virtual: true)
     field(:image, :string)
+    has_many(:posts, Post)
     timestamps()
   end
 
