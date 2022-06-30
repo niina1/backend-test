@@ -12,5 +12,7 @@ defmodule BlogApi do
 
   defdelegate create_post(params), to: Post.Create, as: :call
 
+  defdelegate fetch_post(id), to: Post.Get, as: :call
+
   defdelegate list_posts(), to: Post.List, as: :call
 end
