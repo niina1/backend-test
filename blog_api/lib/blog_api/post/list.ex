@@ -1,4 +1,8 @@
 defmodule BlogApi.Post.List do
+ @moduledoc """
+  Busca todos Posts no banco de dados
+  """
+
   alias BlogApi.{Post, Repo}
 
   @moduledoc """
